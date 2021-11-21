@@ -1,0 +1,28 @@
+<div class="top-text mb-2">
+    <h1 class="title is-size-2">ACNH Tracks</h1>
+    <p>Powered by <a>https://acnhapi</a></p>
+</div>
+<% songResponse = HTTParty.get('https://acnhapi.com/v1/songs') %>
+
+<div class="columns is-multiline is-centered">
+<% songResponse.each do |r| %>
+<div class="column is-narrow">
+    <div class="box has-bg-main">
+        <% imageResponse = r[1]["image_uri"] %>
+        <% musicResponse = r[1]["music_uri"] %>
+        <p class="subtitle"><%= r[1]["name"]["name-USen"] %></p>
+        
+        <figure class="image is-128x128 mb-1">
+            <%= image_tag(imageResponse, size: "128") %>
+        </figure><br>
+        <p>Can be purchased? <% buyAble = r[1]["isOrderable"] %>
+        <% if buyAble %>
+            <b class="has-text-success">Yes</b></p>
+        <% else %>
+            <b class="has-text-danger">No</b></p>
+        <% end %>
+        <%= audio_tag(musicResponse, controls: true) %>
+    </div>
+</div>
+<% end %>
+</div>
